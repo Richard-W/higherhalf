@@ -7,3 +7,4 @@ publish = false
 
 [dependencies]
 common = { path="../common" }
+mmu = "0.1"
