@@ -1,0 +1,12 @@
+[package]
+name = "loader"
+version = "0.0.0"
+authors = ["Richard Wiedenhöft <richard@wiedenhoeft.xyz>"]
+edition = "2018"
+publish = false
+
+[dependencies]
+efw = { git="https://github.com/richard-w/efw" }
+common = { path="../common" }
+mmu = "0.1"
+xmas-elf = "0.6"

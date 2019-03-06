@@ -1,0 +1,10 @@
+[package]
+name = "common"
+version = "0.0.0"
+authors = ["Richard Wiedenhöft <richard@wiedenhoeft.xyz>"]
+edition = "2018"
+publish = false
+
+[dependencies]
+font8x8 = { version="0.2", default-features=false, features=["unicode"] }
+r-efi = { git="https://github.com/r-util/r-efi", branch="master" }
