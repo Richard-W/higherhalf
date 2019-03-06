@@ -15,7 +15,7 @@ extern crate mmu;
 extern crate xmas_elf as elf;
 
 /// ELF image of the kernel.
-const KERNEL_BYTES: &[u8] = include_bytes!("../../target/higherhalf/debug/kernel");
+const KERNEL_BYTES: &[u8] = include_bytes!(concat!("../../", env!("KERNEL_TARGET_DIR"), "/kernel"));
 
 /// Page table to use when boot services are terminated.
 static mut PT4: mmu::amd64::PageTable = mmu::amd64::PageTable::new();
