@@ -10,8 +10,8 @@ pub struct Console {
 
 impl Console {
     pub fn new(framebuffer: Framebuffer) -> Self {
-        let width = framebuffer.width() / 8;
-        let height = framebuffer.height() / 8;
+        let width = (framebuffer.width() / 8) - 1;
+        let height = (framebuffer.height() / 8) - 1;
         Console {
             framebuffer: framebuffer,
             row: 0,
