@@ -7,4 +7,4 @@ publish = false
 
 [dependencies]
 font8x8 = { version="0.2", default-features=false, features=["unicode"] }
-r-efi = { git="https://github.com/r-util/r-efi", branch="master" }
+r-efi = { version="3.1" }

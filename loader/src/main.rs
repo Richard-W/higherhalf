@@ -1,6 +1,6 @@
 #![no_std]
 #![no_main]
-#![feature(asm)]
+#![feature(llvm_asm)]
 #![feature(global_asm)]
 
 extern crate common;
@@ -40,11 +40,7 @@ unsafe fn efw_main() {
 
     // Get the maximum physical memory address.
     let max_phys_addr: usize = {
-        let uefi_mem_map = efi::SystemTable::get()
-            .boot_services()
-            .get_memory_map()
-            .unwrap()
-            ;
+        let uefi_mem_map = efi::MemoryMap::get_current().unwrap();
 
         uefi_mem_map.iter().fold(0, |max_addr, desc| {
             let desc_upper_addr = desc.physical_start as usize + (0x1000 * desc.number_of_pages as usize);
@@ -128,11 +124,7 @@ unsafe fn efw_main() {
         ;
 
     // Get UEFI memory map.
-    let mut mem_map = efi::SystemTable::get()
-        .boot_services()
-        .get_memory_map()
-        .unwrap()
-        ;
+    let mut mem_map = efi::MemoryMap::get_current().unwrap();
 
     // Exit boot services.
     efi::SystemTable::get()
@@ -142,7 +134,7 @@ unsafe fn efw_main() {
         ;
 
     // Use the new page table.
-    asm!("movq $0, %cr3"
+    llvm_asm!("movq $0, %cr3"
          :
          : "r"(&mut PT4 as *mut _)
          :
@@ -152,11 +144,7 @@ unsafe fn efw_main() {
     for desc in mem_map.iter_mut() {
         desc.virtual_start = desc.physical_start + 0xffff_c000_0000_0000;
     }
-    efi::SystemTable::get()
-        .runtime_services()
-        .set_virtual_address_map(&mut mem_map)
-        .unwrap()
-        ;
+    mem_map.set_virtual_address_map().unwrap();
 
     call_kernel(entry_point, &framebuffer as _);
 
@@ -164,7 +152,6 @@ unsafe fn efw_main() {
 }
 
 extern {
-    #[no_mangle]
     fn call_kernel(entry_point: u64, framebuffer: *const Framebuffer);
 }
 

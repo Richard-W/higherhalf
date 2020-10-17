@@ -21,7 +21,8 @@
       "-Wl,--as-needed",
       "-m64",
       "-Wl,--script=./kernel/higherhalf.ld",
-      "-Wl,--nmagic"
+      "-Wl,--nmagic",
+      "-Wl,--no-dynamic-linker"
     ]
   },
   "relro-level": "full",

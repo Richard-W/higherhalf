@@ -1,6 +1,6 @@
 #![no_std]
 #![no_main]
-#![feature(asm)]
+#![feature(llvm_asm)]
 
 extern crate common;
 use common::*;
@@ -26,7 +26,7 @@ fn kmain(framebuffer: *const Framebuffer) {
     unsafe {
         // Get the page table.
         let mut pt4_ptr: *mut mmu::amd64::PageTable;
-        asm!("movq %cr3, $0"
+        llvm_asm!("movq %cr3, $0"
              : "=r"(pt4_ptr)
              :
              :
@@ -37,7 +37,7 @@ fn kmain(framebuffer: *const Framebuffer) {
         pt4[0].clear();
 
         // Flush the TLB.
-        asm!("movq %cr3, %rax; movq %rax, %cr3" : : : "rax");
+        llvm_asm!("movq %cr3, %rax; movq %rax, %cr3" : : : "rax");
     }
 
     // Initialize the console.
